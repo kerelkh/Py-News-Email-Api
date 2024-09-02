@@ -1,10 +1,11 @@
 import dotenv
 import requests
 import os
+from send_email import send_email
 
 dotenv.load_dotenv()
 
-query = os.getenv("WEB_APP") + "/v2/everything?q=" + "testla" + "&apiKey=" + os.getenv("API_KEY")
+query = "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=" + os.getenv("API_KEY")
 
 request = requests.get(query)
 
@@ -12,6 +13,6 @@ result = request.json()
 
 if result["status"] == "ok":
     article = result["articles"][0]
-    print(article["title"])
-    print(article["description"])
-    print(article["url"])
+    send_email(article)
+else:
+    print("Response have no result")
